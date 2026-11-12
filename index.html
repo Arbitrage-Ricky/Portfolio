@@ -1,0 +1,149 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Portfolio</title>
+    <link rel="stylesheet" href="/assets/styles.css">
+</head>
+<body>
+    <div id="view-login" class="view" style="display:none">
+        <div class="login-card">
+            <h1>Portfolio</h1>
+            <p class="muted">Sign in to view holdings and manage imports.</p>
+            <form id="login-form">
+                <label>Username
+                    <input name="username" autocomplete="username" required value="admin">
+                </label>
+                <label>Password
+                    <input name="password" type="password" autocomplete="current-password" required>
+                </label>
+                <p id="login-error" class="error" style="display:none"></p>
+                <button type="submit" class="btn primary">Sign in</button>
+            </form>
+        </div>
+    </div>
+
+    <div id="view-app" class="view" style="display:none">
+        <header class="topbar">
+            <div class="brand">Portfolio</div>
+            <nav class="tabs">
+                <button type="button" class="tab active" data-tab="portfolio">Holdings</button>
+                <button type="button" class="tab" data-tab="admin">Administration</button>
+            </nav>
+            <div class="spacer"></div>
+            <span id="user-label" class="muted"></span>
+            <button type="button" id="btn-logout" class="btn ghost">Sign out</button>
+        </header>
+
+        <main class="container">
+            <section id="tab-portfolio">
+                <p class="timestamp" id="last-updated">Loading…</p>
+                <div id="load-error" class="banner-error" style="display:none"></div>
+                <div class="summary-cards">
+                    <div class="card">
+                        <div class="card-label">Total Invested</div>
+                        <div class="card-value neutral" id="sum-invested">—</div>
+                    </div>
+                    <div class="card">
+                        <div class="card-label">Current Value</div>
+                        <div class="card-value neutral" id="sum-value">—</div>
+                    </div>
+                    <div class="card">
+                        <div class="card-label">Total P&amp;L</div>
+                        <div class="card-value neutral" id="sum-pnl">—</div>
+                    </div>
+                    <div class="card">
+                        <div class="card-label">Return %</div>
+                        <div class="card-value neutral" id="sum-pnl-pct">—</div>
+                    </div>
+                </div>
+                <table>
+                    <thead id="holdings-head"></thead>
+                    <tbody id="holdings-body"></tbody>
+                </table>
+            </section>
+
+            <section id="tab-admin" style="display:none">
+                <div class="admin-grid">
+                    <div class="card admin-block">
+                        <h2>Import Binance Excel</h2>
+                        <p class="muted small">Upload <code>Binance-Spot Trade History-*.xlsx</code>. Existing fills are skipped (dedupe by trade id or row fingerprint).</p>
+                        <form id="form-import">
+                            <input type="file" name="file" accept=".xlsx,.xlsm" required>
+                            <button type="submit" class="btn primary">Import</button>
+                        </form>
+                        <pre id="import-result" class="mono small" style="display:none"></pre>
+                    </div>
+
+                    <div class="card admin-block">
+                        <h2>Manual correction trades</h2>
+                        <p class="muted small">Synthetic BUY/SELL rows (same fields as the portfolio engine). These are not editable Binance imports.</p>
+                        <form id="form-manual" class="dense-form">
+                            <div class="row2">
+                                <label>Date (UTC)<input name="date" placeholder="2026-04-17 12:00:00" required></label>
+                                <label>Pair<input name="pair" placeholder="BTC/USDT" required></label>
+                            </div>
+                            <div class="row2">
+                                <label>Base asset<input name="base_asset" placeholder="BTC" required></label>
+                                <label>Quote<input name="quote_asset" value="USDT" required></label>
+                            </div>
+                            <div class="row2">
+                                <label>Type<select name="type"><option>BUY</option><option>SELL</option></select></label>
+                                <label>Side<select name="side"><option>BUY</option><option>SELL</option></select></label>
+                            </div>
+                            <div class="row3">
+                                <label>Price<input name="price" type="number" step="any" required></label>
+                                <label>Amount<input name="amount" type="number" step="any" required></label>
+                                <label>Total (quote)<input name="total" type="number" step="any" required></label>
+                            </div>
+                            <div class="row2">
+                                <label>Fee<input name="fee" type="number" step="any" value="0"></label>
+                                <label>Fee coin<input name="fee_coin" value="USDT"></label>
+                            </div>
+                            <label>Note<input name="note" placeholder="optional"></label>
+                            <button type="submit" class="btn primary">Add manual trade</button>
+                        </form>
+                        <div id="manual-list" class="table-wrap"></div>
+                    </div>
+
+                    <div class="card admin-block">
+                        <h2>Initial balances</h2>
+                        <p class="muted small">Starting positions outside the Binance export window. Treated as a BUY at date 1970-01-01 with quantity and total USDT cost.</p>
+                        <form id="form-initial" class="dense-form row3">
+                            <label>Asset<input name="asset" placeholder="BTC" required></label>
+                            <label>Quantity<input name="quantity" type="number" step="any" required></label>
+                            <label>Cost (USDT)<input name="cost_usdt" type="number" step="any" value="0"></label>
+                            <button type="submit" class="btn primary">Save</button>
+                        </form>
+                        <div id="initial-list" class="table-wrap"></div>
+                    </div>
+
+                    <div class="card admin-block">
+                        <h2>Cash Balance &amp; Transactions</h2>
+                        <p class="muted small">Binance P2P deposits, withdrawals, and fees. Upload your <code>Binance-Transaction-History-*.csv</code> to populate. Only USDT rows are imported.</p>
+                        <form id="form-import-csv" class="dense-form">
+                            <input type="file" name="file" accept=".csv" required>
+                            <button type="submit" class="btn primary">Import CSV</button>
+                        </form>
+                        <pre id="import-csv-result" class="mono small" style="display:none"></pre>
+                        <div id="cash-events-list" class="table-wrap"></div>
+                    </div>
+
+                    <div class="card admin-block">
+                        <h2>Change password</h2>
+                        <form id="form-password" class="dense-form">
+                            <label>Current password<input name="current" type="password" autocomplete="current-password" required></label>
+                            <label>New password (min 8)<input name="next" type="password" autocomplete="new-password" required minlength="8"></label>
+                            <button type="submit" class="btn primary">Update password</button>
+                        </form>
+                        <p id="pw-msg" class="small" style="display:none"></p>
+                    </div>
+                </div>
+            </section>
+        </main>
+    </div>
+
+    <script src="/assets/app.js" defer></script>
+</body>
+</html>

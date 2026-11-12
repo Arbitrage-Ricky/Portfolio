@@ -1,0 +1,137 @@
+* { margin: 0; padding: 0; box-sizing: border-box; }
+body {
+    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+    background: #0b0e11;
+    color: #eaecef;
+    min-height: 100vh;
+}
+.view { min-height: 100vh; }
+.login-card {
+    max-width: 420px;
+    margin: 80px auto;
+    padding: 32px;
+    background: #1e2329;
+    border-radius: 12px;
+    border: 1px solid #2b3139;
+}
+.login-card h1 { color: #f0b90b; margin-bottom: 8px; }
+.muted { color: #848e9c; }
+.small { font-size: 0.85rem; }
+.mono { font-family: ui-monospace, SFMono-Regular, Menlo, monospace; }
+label { display: flex; flex-direction: column; gap: 6px; font-size: 0.85rem; color: #848e9c; margin-bottom: 12px; }
+input, select, button { font: inherit; color: #eaecef; }
+input, select {
+    padding: 10px 12px;
+    border-radius: 8px;
+    border: 1px solid #2b3139;
+    background: #0b0e11;
+}
+button.btn {
+    padding: 10px 16px;
+    border-radius: 8px;
+    border: 1px solid #2b3139;
+    cursor: pointer;
+    background: #2b3139;
+}
+button.btn.primary {
+    background: #f0b90b;
+    color: #0b0e11;
+    border-color: #f0b90b;
+    font-weight: 600;
+}
+button.btn.ghost { background: transparent; }
+.error { color: #f6465d; font-size: 0.9rem; }
+
+.topbar {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    padding: 12px 20px;
+    border-bottom: 1px solid #2b3139;
+    background: #13161a;
+    position: sticky;
+    top: 0;
+    z-index: 10;
+}
+.brand { font-weight: 700; color: #f0b90b; }
+.tabs { display: flex; gap: 8px; }
+.tab {
+    background: transparent;
+    border: 1px solid transparent;
+    color: #848e9c;
+    padding: 8px 12px;
+    border-radius: 8px;
+    cursor: pointer;
+}
+.tab.active { color: #eaecef; border-color: #2b3139; background: #1e2329; }
+.spacer { flex: 1; }
+
+.container { max-width: 1200px; margin: 0 auto; padding: 20px; }
+.timestamp { color: #848e9c; margin-bottom: 16px; }
+.banner-error {
+    background: #3d1f24;
+    border: 1px solid #f6465d;
+    padding: 12px 16px;
+    border-radius: 8px;
+    margin-bottom: 16px;
+    font-size: 0.9rem;
+}
+.summary-cards {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    gap: 16px;
+    margin-bottom: 24px;
+}
+.card {
+    background: #1e2329;
+    border-radius: 12px;
+    padding: 18px;
+    border: 1px solid #2b3139;
+}
+.card h2 { font-size: 1.1rem; margin-bottom: 8px; }
+.card-label { color: #848e9c; font-size: 0.8rem; text-transform: uppercase; letter-spacing: 0.04em; margin-bottom: 6px; }
+.card-value { font-size: 1.6rem; font-weight: 600; }
+.positive { color: #0ecb81; }
+.negative { color: #f6465d; }
+.neutral { color: #eaecef; }
+
+table { width: 100%; border-collapse: collapse; background: #1e2329; border-radius: 12px; overflow: hidden; border: 1px solid #2b3139; }
+thead { background: #2b3139; }
+th {
+    padding: 14px 10px;
+    text-align: right;
+    font-weight: 500;
+    color: #848e9c;
+    font-size: 0.8rem;
+    text-transform: uppercase;
+}
+th:first-child, td:first-child { text-align: left; padding-left: 16px; }
+td { padding: 12px 10px; text-align: right; border-bottom: 1px solid #2b3139; font-size: 0.92rem; }
+td:first-child { font-weight: 600; }
+tr:hover { background: #2b3139; }
+tr:last-child td { border-bottom: none; }
+.total-row { background: #2b3139; font-weight: 600; }
+.holding-row { cursor: pointer; }
+.asset-toggle {
+    display: inline-flex; width: 22px; margin-right: 6px; color: #848e9c; font-size: 0.65rem;
+    user-select: none; cursor: pointer;
+}
+.trade-detail-inner { overflow-x: auto; margin: 4px 0 8px 28px; border-radius: 8px; border: 1px solid #2b3139; }
+.trade-detail-table { width: 100%; border-collapse: collapse; font-size: 0.78rem; }
+.trade-detail-table th, .trade-detail-table td { padding: 8px; border-bottom: 1px solid #252a31; }
+.trade-detail-table .side-buy { color: #0ecb81; }
+.trade-detail-table .side-sell { color: #f6465d; }
+.detail-row td { background: #13161a; padding: 0 10px 12px; }
+
+.admin-grid { display: flex; flex-direction: column; gap: 20px; }
+.admin-block .dense-form { margin-top: 12px; }
+.row2 { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
+.row3 { display: grid; grid-template-columns: repeat(3, 1fr); gap: 10px; }
+.table-wrap { margin-top: 12px; overflow-x: auto; }
+code { color: #f0b90b; }
+.inline-num { width: 120px; }
+
+@media (max-width: 768px) {
+    .row3 { grid-template-columns: 1fr; }
+    th, td { font-size: 0.82rem; padding: 8px 6px; }
+}
